@@ -556,18 +556,20 @@ body.tab-rc   .controls-rc { display: flex; }
 /* ---- xref: glossary as a togglable right column on setc/rc cards ---- */
 .setc-card, .rc-card {
     display: flex; gap: 22px; align-items: flex-start;
-    width: fit-content; max-width: 100%; margin: 0 auto 24px;
+    margin-bottom: 24px;        /* fills content width and centers like voca */
 }
-.card-main { width: 700px; max-width: 100%; }
+.card-main { flex: 1 1 auto; min-width: 0; }
 
 /* right column: word list + notes, sticky so it follows while scrolling */
 .card-aside {
     width: 220px; flex-shrink: 0; box-sizing: border-box;
     position: sticky; top: 70px;
     max-height: calc(100vh - 90px); overflow-y: auto;
-    display: flex; flex-direction: column; gap: 14px;
+    flex-direction: column; gap: 14px;
+    display: none;   /* shown only when it actually has visible content */
 }
-body:not(.show-gloss):not(.show-notes) .card-aside { display: none; }
+.show-notes .card-aside { display: flex; }                  /* every card has notes */
+.show-gloss .card-aside:has(.glossary) { display: flex; }   /* only cards with words */
 
 .glossary { border: 1px solid #eee; border-radius: 10px; padding: 12px; background: #fcfcfb; }
 body:not(.show-gloss) .glossary { display: none; }
