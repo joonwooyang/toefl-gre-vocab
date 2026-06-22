@@ -437,8 +437,6 @@ body.tab-rc   .pane-rc { display: block; }
         font-size: 20px;
         box-shadow: 0 4px 14px rgba(0,0,0,0.18);
     }
-    .content { min-width: 0; }                              /* avoid overflow on phones */
-    .choice-groups.blanks-3 { grid-template-columns: repeat(2, 1fr); }  /* 2 + 3rd wraps */
 }
 
 /* ---- command palette (centered modal) ---- */
@@ -596,17 +594,25 @@ body:not(.show-gloss) .glossary { display: none; }
                   box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
 .note-box::placeholder { color: #c4c4c4; }
 
-/* widen the centered column-pair when word list OR notes is shown (setc/rc) */
-body.show-gloss.tab-setc .container, body.show-notes.tab-setc .container,
-body.show-gloss.tab-rc   .container, body.show-notes.tab-rc   .container { max-width: 980px; }
-body.show-gloss.tab-setc .content, body.show-notes.tab-setc .content,
-body.show-gloss.tab-rc   .content, body.show-notes.tab-rc   .content { max-width: 960px; }
+/* widen the centered column-pair when word list OR notes is shown — desktop only */
+@media (min-width: 961px) {
+    body.show-gloss.tab-setc .container, body.show-notes.tab-setc .container,
+    body.show-gloss.tab-rc   .container, body.show-notes.tab-rc   .container { max-width: 980px; }
+    body.show-gloss.tab-setc .content, body.show-notes.tab-setc .content,
+    body.show-gloss.tab-rc   .content, body.show-notes.tab-rc   .content { max-width: 960px; }
+}
 
-/* stack the right column below the question whenever the 2-col pair won't fit */
+/* below 961px: never 2-col — card fills full width, right column stacks below */
 @media (max-width: 960px) {
+    .container { max-width: 100%; }
+    .content { max-width: 100%; min-width: 0; }
     .setc-card, .rc-card { flex-direction: column; width: auto; align-items: stretch; }
-    .card-main { width: auto; }
-    .card-aside { width: auto; position: static; max-height: none; }
+    .card-main { width: 100%; }
+    .card-aside { width: 100%; position: static; max-height: none; }
+    /* one choice box per row regardless of blank count (full width, stacked) */
+    .choice-groups, .choice-groups.blanks-2, .choice-groups.blanks-3 {
+        grid-template-columns: 1fr;
+    }
 }
 
 </style>
